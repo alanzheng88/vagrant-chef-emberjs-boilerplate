@@ -15,3 +15,12 @@ end
 execute 'ntp_restart' do
   command 'service ntp restart'
 end
+
+# Setup nginx webserver
+package "nginx"
+cookbook_file "nginx-default" do
+  path "/etc/nginx/sites-available/default"
+end
+execute "nginx_reload" do
+  command "nginx -s reload"
+end
