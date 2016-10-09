@@ -1,6 +1,35 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
+$rootScript = <<SCRIPT
+  # Include git and curl related commands here
+  cd /home/ubuntu
+  apt-get update
+SCRIPT
+
+$userScript = <<SCRIPT
+  cd /home/ubuntu
+
+  # Install nvm as the default 'ubuntu' user
+  wget -qO- https://raw.githubusercontent.com/creationix/nvm/v0.32.0/install.sh | bash
+
+  # Enable nvm without a logout/login
+  export NVM_DIR="/home/ubuntu/.nvm"
+  [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
+
+  if ! command -v node >/dev/null 2>&1; then
+    echo "Installing nodejs ..."
+    # Install nodejs and alias
+    nvm install v6.7.0
+    nvm alias default 6.7.0
+  fi
+
+  if ! command -v ember >/dev/null 2>&1; then
+    npm install -g ember-cli@2.6
+  fi
+SCRIPT
+
+
 VAGRANTFILE_API_VERSION = "2"
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
@@ -11,6 +40,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # within the machine from a port on the host machine. In the example below,
   # accessing "localhost:8080" will access port 80 on the guest machine.
   config.vm.network "forwarded_port", guest: 80, host: 8080
+  config.vm.network "forwarded_port", guest: 4200, host: 8000
+  config.vm.network "forwarded_port", guest: 49152, host: 8001
 
   # Share an additional folder to the guest VM. The first argument is
   # the path on the host to the actual folder. The second argument is
@@ -42,5 +73,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     chef.cookbooks_path = "chef/cookbooks"
     chef.add_recipe "baseconfig"
   end
-
+  
+  # Shell provisioning
+  config.vm.provision "shell", inline: $rootScript
+  config.vm.provision "shell", inline: $userScript, privileged: false
 end
