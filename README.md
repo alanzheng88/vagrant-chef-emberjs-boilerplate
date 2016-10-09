@@ -13,7 +13,8 @@
 6. If you see "Congratulations, you made it", you're all set.
 
 ### Commit Message Format
-- \<#task | #issue-number\> `[<initials>`] \<Descriptive Message\> 
+- \<#task | #issue-number\> \[\<initials\>\] \<Descriptive Message\> 
+
 ###### examples:
 - #task [az] Update Readme
 - #12 [az] minor bug fix in survey.js
