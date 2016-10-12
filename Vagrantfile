@@ -25,9 +25,13 @@ $userScript = <<SCRIPT
   fi
 
   if ! command -v ember >/dev/null 2>&1; then
-    npm install -g ember-cli@2.6
+    npm set progress=false
+    # workaround to npm bug which cause it to hang
+    npm install -g -verbose npm
+    npm install -g -verbose ember-cli@2.6
   fi
 SCRIPT
+
 
 
 VAGRANTFILE_API_VERSION = "2"
@@ -52,10 +56,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   # Provider-specific configuration so you can fine-tune various
   # backing providers for Vagrant. These expose provider-specific options.
-  # If you need to more than double the defaults for this course, you have
+  # If you need to use more than double the defaults for this course, you have
   # done something wrong.
   cpus = "1"
-  memory = "512" # MB
+  memory = "1024" # MB
   config.vm.provider :virtualbox do |vb|
     vb.customize ["modifyvm", :id, "--cpus", cpus, "--memory", memory]
     vb.customize ["modifyvm", :id, "--uartmode1", "disconnected"] # speed up boot https://bugs.launchpad.net/cloud-images/+bug/1627844
