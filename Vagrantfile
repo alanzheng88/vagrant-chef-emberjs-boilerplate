@@ -31,8 +31,7 @@ $userScript = <<SCRIPT
     npm update -verbose
     bower install -V
     npm install -g -verbose ember-cli@2.6
-  else
-    npm set progress=false
+    cd /home/ubuntu/project/webroot
     npm install -verbose
   fi
 SCRIPT
@@ -68,6 +67,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.provider :virtualbox do |vb|
     vb.customize ["modifyvm", :id, "--cpus", cpus, "--memory", memory]
     vb.customize ["modifyvm", :id, "--uartmode1", "disconnected"] # speed up boot https://bugs.launchpad.net/cloud-images/+bug/1627844 
+    vb.customize ["setextradata", :id, "VBoxInternal2/SharedFoldersEnableSymlinksCreate/v-root", "1"]
     #vb.gui = true
   end
   config.vm.provider "vmware_fusion" do |v, override|
@@ -83,8 +83,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     chef.add_recipe "baseconfig"
   end
   
-  config.vm.synced_folder ".", "/var/www", type: "rsync", rsync__args: ["--verbose", "--archive", "--delete", "-z"]
-
   # Shell provisioning
   config.vm.provision "shell", inline: $rootScript
   config.vm.provision "shell", inline: $userScript, privileged: false
