@@ -34,7 +34,7 @@ $userScript = <<SCRIPT
     # set up project
     cd /home/ubuntu/project/webroot
     npm install --no-bin-links --verbose || npm install --no-bin-links --verbose
-    bundle install -verbose
+    bower install --verbose
   fi
 SCRIPT
 
