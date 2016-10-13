@@ -27,12 +27,10 @@ $userScript = <<SCRIPT
   if ! command -v ember >/dev/null 2>&1; then
     npm set progress=false
     # workaround to npm bug which cause it to hang
-    npm install -g -verbose npm
+    npm install -g -verbose npm@latest
     npm update -verbose
     bower install -V
     npm install -g -verbose ember-cli@2.6
-    cd /home/ubuntu/project/webroot
-    npm install -verbose
   fi
 SCRIPT
 

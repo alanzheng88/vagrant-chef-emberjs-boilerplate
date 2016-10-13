@@ -15,3 +15,10 @@ end
 execute "ntp_restart" do
   command "service ntp restart"
 end
+
+#execute "ember-cli_install" do
+#  cwd "/home/ubuntu/project/webroot"
+#  user "vagrant"
+#  environment ({'HOME' => '/home/ubuntu', 'USER' => 'ubuntu'})
+#  command "npm install -verbose"
+#end
