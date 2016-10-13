@@ -29,7 +29,7 @@ $userScript = <<SCRIPT
     # workaround to npm bug which cause it to hang
     npm install -g -verbose npm
     npm update -verbose
-    npm install -g -verbose bower
+    bower install -V
     npm install -g -verbose ember-cli@2.6
   fi
 SCRIPT
