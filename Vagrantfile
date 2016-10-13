@@ -31,6 +31,8 @@ $userScript = <<SCRIPT
     npm update -verbose
     bower install -V
     npm install -g -verbose ember-cli@2.6
+    cd /home/ubuntu/project/webroot
+    npm install -verbose
   fi
 SCRIPT
 
@@ -64,7 +66,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   memory = "1024" # MB
   config.vm.provider :virtualbox do |vb|
     vb.customize ["modifyvm", :id, "--cpus", cpus, "--memory", memory]
-    vb.customize ["modifyvm", :id, "--uartmode1", "disconnected"] # speed up boot https://bugs.launchpad.net/cloud-images/+bug/1627844
+    vb.customize ["modifyvm", :id, "--uartmode1", "disconnected"] # speed up boot https://bugs.launchpad.net/cloud-images/+bug/1627844 
+    vb.customize ["setextradata", :id, "VBoxInternal2/SharedFoldersEnableSymlinksCreate/v-root", "1"]
     #vb.gui = true
   end
   config.vm.provider "vmware_fusion" do |v, override|
@@ -78,8 +81,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.provision "chef_solo" do |chef|
     chef.cookbooks_path = "chef/cookbooks"
     chef.add_recipe "baseconfig"
-  end
-  
+  end 
+
   # Shell provisioning
   config.vm.provision "shell", inline: $rootScript
   config.vm.provision "shell", inline: $userScript, privileged: false
