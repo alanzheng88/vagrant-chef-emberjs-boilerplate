@@ -31,6 +31,9 @@ $userScript = <<SCRIPT
     npm update -verbose
     bower install -V
     npm install -g -verbose ember-cli@2.6
+    # set up project
+    cd /home/ubuntu/project/webroot
+    npm install --no-bin-links --verbose
   fi
 SCRIPT
 
