@@ -16,9 +16,8 @@ execute "ntp_restart" do
   command "service ntp restart"
 end
 
-#execute "project_dependency_install" do
-#  cwd "/home/ubuntu/project/webroot"
-#  user "ubuntu"
-#  environment ({'HOME' => '/home/ubuntu', 'USER' => 'ubuntu'})
-#  command "npm install --no-bin-links --verbose"
-#end
+file "/home/ubuntu/.bashrc" do
+  content "cd /home/ubuntu/project/webroot"
+  action :create
+end
+

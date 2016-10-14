@@ -5,12 +5,11 @@
 - Guest: The VM (accessed through terminal)
 
 ### Usage Instructions
-1. Call vagrant up (Note that it may seem to hang after "==> default:  minimatch@2.0.10: Please update to minimatch 3.0.2 or higher to avoid a RegExp DoS issue" but this is because it is installing in the background)
+1. Call vagrant up
 2. vagrant ssh
-3. cd /home/ubuntu/project/webroot/
-4. ember server (This takes 2-3 minutes to load)
-5. From your host, go to http://localhost:8000
-6. If you see "Congratulations, you made it", you're all set.
+3. ember server (This takes 2-3 minutes to load)
+4. From your host, go to http://localhost:8000
+5. If you see "Congratulations, you made it", you're all set.
 
 ### Commit Message Format
 - \<#task | #issue-number\> \[\<initials\>\] \<Descriptive Message\> 
