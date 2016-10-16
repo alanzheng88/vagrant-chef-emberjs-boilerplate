@@ -16,6 +16,18 @@ execute "ntp_restart" do
   command "service ntp restart"
 end
 
+# Increase amount of inotify watchers otherwise watchman will not work properly
+cookbook_file "sysctl.conf" do
+  path "/etc/sysctl.conf"
+  notifies :run, "execute[sysctl_refresh]", :immediate
+end
+execute "sysctl_refresh" do
+  # Refresh with new configuration
+  command "sysctl -p"
+  action :nothing
+end
+
+# Set default log in directory
 file "/home/ubuntu/.bashrc" do
   content "cd /home/ubuntu/project/webroot"
   action :create

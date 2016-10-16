@@ -1,10 +1,15 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
-$rootScript = <<SCRIPT
+$rootScriptBefore = <<SCRIPT
   # Include git and curl related commands here
   cd /home/ubuntu
   apt-get update
+  # Install dependency to use make
+  apt-get -y install build-essential
+  # Install dependencies for watchman
+  apt-get -y install python3-dev
+  apt-get -y install automake
 SCRIPT
 
 $userScript = <<SCRIPT
@@ -27,16 +32,34 @@ $userScript = <<SCRIPT
   if ! command -v ember >/dev/null 2>&1; then
     npm set progress=false
     # workaround to npm bug which cause it to hang
-    npm install -g -verbose npm@latest
+    npm install -g --verbose npm@latest
     npm update -verbose
-    npm install -g -verbose bower@latest
-    npm install -g -verbose ember-cli@2.6
+    npm install -g --verbose bower@latest
+    npm install -g --verbose ember-cli@2.6
     # set up project
     cd /home/ubuntu/project/webroot
     npm install --no-bin-links --verbose || npm install --no-bin-links --verbose
     bower install --verbose
+  else
+    cd /home/ubuntu/project/webroot
+    npm install --no-bin-links --verbose
+    bower install --verbose
+  fi
+
+
+SCRIPT
+
+$rootScriptAfter = <<SCRIPT
+  if ! command -v watchman >/dev/null 2>&1; then
+    git clone https://github.com/facebook/watchman.git
+    cd watchman
+    ./autogen.sh
+    ./configure
+    make
+    make install
   fi
 SCRIPT
+
 
 
 
@@ -52,6 +75,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.network "forwarded_port", guest: 80, host: 10080
   config.vm.network "forwarded_port", guest: 4200, host: 10000
   config.vm.network "forwarded_port", guest: 49152, host: 10001
+  config.vm.network "forwarded_port", guest: 7357, host: 10002
 
   # Share an additional folder to the guest VM. The first argument is
   # the path on the host to the actual folder. The second argument is
@@ -85,6 +109,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   end
   
   # Shell provisioning
-  config.vm.provision "shell", inline: $rootScript
+  config.vm.provision "shell", inline: $rootScriptBefore
   config.vm.provision "shell", inline: $userScript, privileged: false
+  config.vm.provision "shell", inline: $rootScriptAfter
 end
