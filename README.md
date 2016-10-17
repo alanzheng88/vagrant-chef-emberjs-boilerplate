@@ -7,9 +7,13 @@
 4. From your host, go to http://localhost:10000
 5. If you see "Congratulations, you made it", you're all set.
 
+### Using livereload
+- Open google chrome and install livereload plugin
+- go to http://localhost:10000
+
 ### Running Tests
-- From your host, go to http://localhost:10002
+- In google chrome, go to http://localhost:10002
 
 ### Current Issues
-- ember server startup time: ~60 seconds
+- ember server startup time: ~40 seconds
 
