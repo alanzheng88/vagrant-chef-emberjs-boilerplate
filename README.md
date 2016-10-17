@@ -1,4 +1,4 @@
-# Vagrant Chef for Ember.js [Website](http://emberjs.com)
+# Vagrant Chef for [Ember.js](http://emberjs.com)
 
 ### Usage Instructions
 1. Call vagrant up
