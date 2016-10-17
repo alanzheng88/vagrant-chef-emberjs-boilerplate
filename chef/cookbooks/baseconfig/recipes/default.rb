@@ -27,6 +27,11 @@ execute "sysctl_refresh" do
   action :nothing
 end
 
+# Speed up vagrant through nfs - experiencing performance hits for server and tests
+execute "nfs-common_portmap_install" do
+  command "apt-get install nfs-common portmap"
+end
+
 # Set default log in directory
 file "/home/ubuntu/.bashrc" do
   content "cd /home/ubuntu/project/webroot"

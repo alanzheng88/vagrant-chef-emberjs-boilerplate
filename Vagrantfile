@@ -1,6 +1,7 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
+# Anything related to getting ember.js set up is included below
 $rootScriptBefore = <<SCRIPT
   # Include git and curl related commands here
   cd /home/ubuntu
@@ -8,7 +9,7 @@ $rootScriptBefore = <<SCRIPT
   # Install dependency to use make
   apt-get -y install build-essential
   # Install dependencies for watchman
-  apt-get -y install python3-dev
+  apt-get -y install python-dev
   apt-get -y install automake
 SCRIPT
 
@@ -76,12 +77,13 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.network "forwarded_port", guest: 4200, host: 10000
   config.vm.network "forwarded_port", guest: 49152, host: 10001
   config.vm.network "forwarded_port", guest: 7357, host: 10002
+  config.vm.network "private_network", type: "dhcp"
 
   # Share an additional folder to the guest VM. The first argument is
   # the path on the host to the actual folder. The second argument is
   # the path on the guest to mount the folder. And the optional third
   # argument is a set of non-required options.
-  config.vm.synced_folder "./", "/home/ubuntu/project"
+  config.vm.synced_folder "./", "/home/ubuntu/project", :nfs => true
   # config.vm.synced_folder "../data", "/vagrant_data"
 
   # Provider-specific configuration so you can fine-tune various
